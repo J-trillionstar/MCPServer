@@ -15,6 +15,8 @@
 - 两个 transport：`WebMvcStatelessServerTransport`
 - 两个 server：`McpStatelessSyncServer`
 
+项目在 `McpServerApplication` 中显式排除了 Spring AI MCP server 的单 server 自动配置，避免 starter 自动创建的 `DefaultMcpStatelessServerTransport` 和手动创建的多 endpoint transport 发生 bean 冲突。
+
 核心代码：
 
 - `src/main/java/demo/mcp/config/McpServerConfig.java`
