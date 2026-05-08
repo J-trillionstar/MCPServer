@@ -5,12 +5,6 @@ server:
 spring:
   application:
     name: spring-multi-mcp-server
-  ai:
-    mcp:
-      server:
-        enabled: false
-        annotation-scanner:
-          enabled: false
 
 logging:
   level:

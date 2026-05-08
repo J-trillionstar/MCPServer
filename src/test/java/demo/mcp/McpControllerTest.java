@@ -9,6 +9,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -64,5 +65,26 @@ class McpControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.result.content[0].type").value("text"))
                 .andExpect(jsonPath("$.result.isError").value(false));
+    }
+
+    @Test
+    void endpointsExposeIndependentToolSets() throws Exception {
+        mockMvc.perform(post("/mcp/online")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content("{\"jsonrpc\":\"2.0\",\"id\":4,\"method\":\"tools/call\",\"params\":{\"name\":\"datasource_list_tables\",\"arguments\":{}}}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.error.code").value(-32602))
+                .andExpect(jsonPath("$.error.message").value("Unknown tool: datasource_list_tables"));
+    }
+
+    @Test
+    void initializedNotificationReturnsAcceptedWithoutBody() throws Exception {
+        mockMvc.perform(post("/mcp/datasource")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content("{\"jsonrpc\":\"2.0\",\"method\":\"notifications/initialized\",\"params\":{}}"))
+                .andExpect(status().isAccepted())
+                .andExpect(content().string(""));
     }
 }

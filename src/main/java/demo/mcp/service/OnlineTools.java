@@ -2,8 +2,6 @@ package demo.mcp.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.springaicommunity.mcp.annotation.McpTool;
-import org.springaicommunity.mcp.annotation.McpToolParam;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
@@ -27,34 +25,14 @@ public class OnlineTools {
         this.objectMapper = objectMapper;
     }
 
-    @McpTool(
-            name = "online_current_time",
-            description = "Return the current server time in ISO-8601 format.",
-            annotations = @McpTool.McpAnnotations(
-                    title = "Current server time",
-                    readOnlyHint = true,
-                    destructiveHint = false,
-                    idempotentHint = true,
-                    openWorldHint = false))
     public String currentTime() {
         ObjectNode result = objectMapper.createObjectNode();
         result.put("serverTime", OffsetDateTime.now().toString());
         return pretty(result);
     }
 
-    @McpTool(
-            name = "online_fetch_url",
-            description = "Fetch a small text response from an http or https URL. This is intended for local demos only.",
-            annotations = @McpTool.McpAnnotations(
-                    title = "Fetch URL",
-                    readOnlyHint = true,
-                    destructiveHint = false,
-                    idempotentHint = false,
-                    openWorldHint = true))
     public String fetchUrl(
-            @McpToolParam(description = "HTTP or HTTPS URL to fetch.")
             String url,
-            @McpToolParam(required = false, description = "Maximum response characters. Defaults to 1000, max 4000.")
             Integer max_chars) {
 
         return pretty(fetch(requireText(url, "url"), boundedMaxChars(max_chars == null ? 1000 : max_chars)));

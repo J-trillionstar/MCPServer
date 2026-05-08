@@ -3,8 +3,6 @@ package demo.mcp.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.springaicommunity.mcp.annotation.McpTool;
-import org.springaicommunity.mcp.annotation.McpToolParam;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,15 +22,6 @@ public class DatasourceTools {
         seed();
     }
 
-    @McpTool(
-            name = "datasource_list_tables",
-            description = "List available demo datasource tables and their columns.",
-            annotations = @McpTool.McpAnnotations(
-                    title = "List demo tables",
-                    readOnlyHint = true,
-                    destructiveHint = false,
-                    idempotentHint = true,
-                    openWorldHint = false))
     public String listTables() {
         ObjectNode result = objectMapper.createObjectNode();
 
@@ -45,27 +34,12 @@ public class DatasourceTools {
         return pretty(result);
     }
 
-    @McpTool(
-            name = "datasource_query_demo_data",
-            description = "Query demo datasource rows. Supported tables: customers, orders. Optional filters: city, tier, status, customer_id, limit.",
-            annotations = @McpTool.McpAnnotations(
-                    title = "Query demo datasource",
-                    readOnlyHint = true,
-                    destructiveHint = false,
-                    idempotentHint = true,
-                    openWorldHint = false))
     public String queryDemoData(
-            @McpToolParam(description = "Table name. Supported values: customers, orders.")
             String table,
-            @McpToolParam(required = false, description = "Filter customers by city.")
             String city,
-            @McpToolParam(required = false, description = "Filter customers by tier.")
             String tier,
-            @McpToolParam(required = false, description = "Filter orders by status.")
             String status,
-            @McpToolParam(required = false, description = "Filter orders by customer id.")
             Integer customer_id,
-            @McpToolParam(required = false, description = "Maximum rows to return. Defaults to 5, max 20.")
             Integer limit) {
 
         String normalizedTable = requireText(table, "table");
