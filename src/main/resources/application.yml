@@ -1,0 +1,18 @@
+server:
+  address: 127.0.0.1
+  port: 8080
+
+spring:
+  application:
+    name: spring-multi-mcp-server
+  ai:
+    mcp:
+      server:
+        enabled: false
+        annotation-scanner:
+          enabled: false
+
+logging:
+  level:
+    root: INFO
+    demo.mcp: DEBUG

@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "datasource": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "http://127.0.0.1:8080/mcp/datasource"
+      ]
+    },
+    "online": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "http://127.0.0.1:8080/mcp/online"
+      ]
+    }
+  }
+}
